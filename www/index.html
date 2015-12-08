@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <title>そふこれっ！</title>
+
+    <link rel="stylesheet" href="lib/onsen/css/onsenui.css">
+    <link rel="stylesheet" href="lib/onsen/css/onsen-css-components-blue-basic-theme.css">
+    <link rel="stylesheet" href="css/home.css" />
+
+    <script src="js/commonFunctions.js"></script>
+
+    <script src="js/storageManager.js"></script>
+
+
+    <script src="lib/onsen/js/angular/angular.js"></script>
+    <script src="lib/onsen/js/onsenui.js"></script>
+
+    <script src="cordova.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        ons.ready(function() {
+            // onsen ready 
+            storage_manager = new StorageManager("SOFTCREAM_COLLECTION_LIST")
+
+        });
+    </script>
+
+    <style>
+    .label_area{
+        width: 30%;
+        overflow: hidden;
+    }
+    </style>
+</head>
+
+<body ng-controller="AppController">
+
+<ons-navigator var="myNavigator" page="home.html">
+
+</ons-navigator>
+
+<ons-template id="home.html">
+    <ons-page ng-controller="HomeController as home">
+    
+      <ons-toolbar>
+        <!--
+        <div class="left"><ons-back-button>Back</ons-back-button></div>
+        -->
+        <div class="center">Profile</div>
+        <div class="right">
+          <ons-toolbar-button><ons-icon icon="ion-gear-a" style="vertical-align: -4px; font-size: 28px;"></ons-icon></ons-toolbar-button>
+        </div>
+      </ons-toolbar>
+
+
+      <div class="profile-card">
+        <img src="images/profile-image-01.png" class="profile-image">
+        <div class="profile-name">{{home.data.name}}</div>
+        <div class="profile-desc">{{home.data.comment}}</div>
+        <div class="profile-purcase_date">{{home.data.purchace_date}}</div>
+      </div>
+     
+      <ons-list>
+        <ons-list-item>
+          <ons-row>
+            <ons-col class="info-col">
+              <div class="info-num">{{home.data.maintainance_records}}</div>
+              <div class="info-unit">Maintainance</div>
+            </ons-col>
+            <ons-col class="info-col">
+              <div class="info-num">{{home.data.touring_records}}</div>
+              <div class="info-unit">Tourings</div>
+            </ons-col>
+          </ons-row>
+        </ons-list-item>
+      </ons-list>
+
+    <ons-button onclick="myNavigator.pushPage('entry_record.html')">登録！</ons-button>
+
+    <ons-button onclick="myNavigator.pushPage('view_record.html')">照会！</ons-button>
+
+    <ons-button ng-click="home.selectT_MAINTAINANCE()">select from db</ons-button>
+
+    </ons-page>
+</ons-template>
+
+
+<!-- 
+********** ソフトクリーム登録画面 **********
+-->
+<ons-template id="entry_record.html">
+    <ons-page ng-controller="EntryController">
+
+      <ons-toolbar>
+        <div class="left"><ons-back-button>Back</ons-back-button></div>
+        <div class="center">Add Record</div>
+      </ons-toolbar>
+        
+        <ons-list modifier="inset">
+
+            <ons-list-item>
+                <ons-row>
+                    <ons-col class="label_area">
+                        <label for="entry_sf_title">タイトル</label>
+                    </ons-col>
+                    
+                        <input type="text" ng-model="sf_title" id="entry_sf_title">
+
+                </ons-row>
+            </ons-list-item>
+
+            <ons-list-item>
+                <ons-row>
+                    <ons-col>
+                        <label for="entry_sf_date">日付</label>
+                    </ons-col>
+                    
+                    <input type="text" ng-model="sf_date" id="entry_sf_date" />
+
+                </ons-row>
+            </ons-list-item>
+
+            <!--
+            画像入力エリア
+            -->
+
+            <ons-list-item>
+                <ons-row>
+                    <ons-col>
+                        <label for="input_d_bunrui">味の系統</label>
+                    </ons-col>
+                    <ons-col>
+                        <ons-button id="entry_sf_flavor_group" ng-click="showSelectListFlavorGroup()">選択</ons-button>
+                        <span>{{sf_selected_flavor_group}}</span>
+                    </ons-col>
+                </ons-row>
+            </ons-list-item>
+
+            <ons-list-item>
+                <ons-row>
+                    <ons-col>
+                        <label for="entry_sf_rating">ソフトクリームの評価</label>
+                    </ons-col>
+                    
+                    <input type="text" ng-model="sf_rating" id="entry_sf_rating" />
+
+                </ons-row>
+            </ons-list-item>
+
+            <ons-list-item>
+                <ons-row>
+                    <ons-col>
+                        <label for="entry_sf_rating_corn">コーンの評価</label>
+                    </ons-col>
+                    
+                    <input type="text" ng-model="sf_rating_corn" id="entry_sf_rating_corn" />
+
+                </ons-row>
+            </ons-list-item>
+
+            <ons-list-item>
+                <ons-row>
+                    <ons-col>
+                        <label for="entry_sf_price">価格</label>
+                    </ons-col>
+                    
+                    <input type="text" ng-model="sf_price" id="entry_sf_price" />
+
+                </ons-row>
+            </ons-list-item>
+
+            <ons-list-item>
+                <ons-row>
+                    <ons-col>
+                        <label for="entry_sf_comment">コメント</label>
+                    </ons-col>
+                    
+                    <input type="text" ng-model="sf_comment" id="entry_sf_comment" />
+
+                </ons-row>
+            </ons-list-item>
+
+        </ons-list>
+
+        <button class="button button--large" ng-click="entryRecord()">登録</button>
+
+    </ons-page>
+</ons-template>
+
+
+
+<!-- 整備レコード照会ページ -->
+<ons-template id="view_record.html">
+    <ons-page ng-controller="ViewListController">
+
+    <ons-toolbar>
+        <div class="left"><ons-back-button>Back</ons-back-button></div>
+        <div class="center">View</div>
+        <div class="right">
+            <ons-toolbar-button><ons-icon icon="ion-gear-a" style="vertical-align: -4px; font-size: 28px;"></ons-icon></ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+
+    <ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="processItemSelect($index)">
+        <ons-row>
+            <ons-col class="view_h_id">
+                <p class="item-desc">{{item.id}}</p>
+            </ons-col>
+            <ons-col class="view_h_title">
+                <p class="item-desc">{{item.title}}</p>
+            </ons-col>
+            <ons-col class="view_h_date">
+                <p class="item-desc">{{item.date}}</p>
+            </ons-col>
+            <ons-col class="view_h_picture">
+                <p class="item-desc">{{item.picture}}</p>
+            </ons-col>
+            <ons-col class="view_h_flavor_group">
+                <p class="item-desc">{{item.flavor_group}}</p>
+            </ons-col>
+            <ons-col class="view_h_map">
+                <p class="item-desc">{{item.map}}</p>
+            </ons-col>
+            <ons-col class="view_h_rating">
+                <p class="item-desc">{{item.rating}}</p>
+            </ons-col>
+            <ons-col class="view_h_rating_corn">
+                <p class="item-desc">{{item.rating_corn}}</p>
+            </ons-col>
+            <ons-col class="view_h_price">
+                <p class="item-desc">{{item.price}}</p>
+            </ons-col>
+            <ons-col class="view_h_comment">
+                <p class="item-desc">{{item.comment}}</p>
+            </ons-col>
+        </ons-row>
+    </ons-list-item>
+
+    </ons-page>
+</ons-template>
+
+
+
+
+
+
+
+
+<!-- 共通リスト項目選択ページ -->
+<ons-template id="list_select_page.html">
+    <ons-page ng-controller="SelectListController">
+
+      <ons-toolbar>
+        <div class="left"><ons-back-button>Back</ons-back-button></div>
+        <div class="center">Select</div>
+        <div class="right">
+          <ons-toolbar-button><ons-icon icon="ion-gear-a" style="vertical-align: -4px; font-size: 28px;"></ons-icon></ons-toolbar-button>
+        </div>
+      </ons-toolbar>
+
+        <ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="processItemSelect($index)">
+            <ons-row>
+                <ons-col class="{{}}">
+                    <p class="item-desc">{{item.key}}</p>
+                </ons-col>
+                <ons-col class="{{}}">
+                    <p class="item-desc">{{item.value}}</p>
+                </ons-col>
+            </ons-row>
+        </ons-list-item>
+
+    </ons-page>
+</ons-template>
+
+</body>
+</html>
