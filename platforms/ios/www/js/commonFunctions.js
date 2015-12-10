@@ -1,14 +1,3 @@
-/* ログを出力する */
-function outLog(msg){
-	if((typeof msg) == "object"){
-		console.log("(is object...)");
-	}
-	else{
-		console.log(msg);
-	}
-	
-	//document.getElementById("contents_wrapper").innerHTML += msg + "<br>";
-}
 
 /* 時間を文字列に変換 */
 function formatDate(date){

@@ -1,7 +1,8 @@
 (function(){
     'use strict';
     var module = angular.module('app', ['onsen']);
-    //var storage_manager = new StorageManager("SOFTCREAM_COLLECTION_LIST");
+    var storage_manager = new StorageManager("SOFTCREAM_COLLECTION_LIST");
+
 
     module.controller('AppController', function($scope, $data) {
         $scope.doSomething = function() {
@@ -38,6 +39,7 @@
 
     module.controller('EntryController', function($scope, selectList) {
 
+        $scope.sf_id = "";
         $scope.sf_title =  "";
         $scope.sf_date = "";
         $scope.sf_picture = "";
@@ -47,6 +49,36 @@
         $scope.sf_rating_corn = 0;
         $scope.sf_price = 0;
         $scope.sf_comment = "";
+
+        $scope.visibility = {
+            btn_entry: "inline",
+            btn_mod: "none"
+        };
+
+        var _args = myNavigator.getCurrentPage().options;
+
+        //照会画面としてコールされた場合
+        if(_args && _args.call_as_mod_screen){
+
+            var item = _args.item;
+
+            console.log("照会画面としてentry.htmlにきました。itemの値は...");
+            console.log(item);
+
+            $scope.sf_id = item.id;
+            $scope.sf_title =  item.title;
+            $scope.sf_date = item.date;
+            $scope.sf_picture = "";
+            $scope.sf_selected_flavor_group = item.flavor_group;
+            $scope.sf_map_pos = item.map;
+            $scope.sf_rating = item.rating;
+            $scope.sf_rating_corn = item.rating_corn;
+            $scope.sf_price = item.price;
+            $scope.sf_comment = item.comment;
+
+            $scope.visibility.btn_entry = "none";
+            $scope.visibility.btn_mod = "inline";
+        }
 
         // 味の系統リスト
         $scope.showSelectListFlavorGroup = function(){
@@ -105,6 +137,62 @@
             //ここで、成功した場合のみ前画面に戻りたい...
         }
 
+        //修正ボタン
+        $scope.modifyRecord = function(){
+
+            console.log("mod start");
+
+            //タイトルの入力判定
+            if(isEmpty($scope.sf_title)){
+                ons.notification.alert({
+                  message: "タイトルを入力してよっ！！"
+                });
+
+                return;
+            }
+
+            //idの入力判定
+            if(isEmpty($scope.sf_id)){
+                ons.notification.alert({
+                  message: "id not found..."
+                });
+
+                return;
+            }
+
+            var sf_obj = {
+                id: $scope.sf_id,
+                title: $scope.sf_title,
+                date: $scope.sf_date,
+                picture: $scope.sf_picture,
+                flavor_group: $scope.sf_selected_flavor_group,
+                map: $scope.sf_map_pos,
+                rating: $scope.sf_rating,
+                rating_corn: $scope.sf_rating_corn,
+                price: $scope.sf_price,
+                comment: $scope.sf_comment
+            };
+
+            //ストレージに1件修正レコードを投げる
+            try{
+                console.log("修正直前のsf_obj:");
+                console.log(sf_obj);
+                storage_manager.saveItem2Storage(sf_obj.id, sf_obj);
+
+                //操作成功の場合は前画面に戻る
+                myNavigator.popPage();
+            }
+            catch(e){
+                ons.notification.alert({
+                  message: "修正に失敗しました..."
+                });
+
+                console.log(e);
+            }
+
+            
+        }
+
         // リスト選択イベント受け取り
         $scope.$on("listSelected", function(e, param){
 
@@ -127,11 +215,79 @@
 
         $scope.items = storage_manager.getAllItem();
 
-        $scope.processItemSelect = function(index){
+        $scope.processItemSelect = function(index, event){
             console.log("item selected!!");
 
-        }
+            //var el_target_rows = document.querySelectorAll("#view_record_list > ons-row > .view_h_id > p"); //※※※※※※※※※修正
+            var el_target_rows = document.querySelectorAll("#view_record_list > ons-row"); //※※※※※※※※※修正
+            console.log(el_target_rows);
+
+
+
+            //アイテムが選択されたら、明細情報照会画面に遷移する
+            myNavigator.pushPage('view_record_detail.html', {
+                selected_id: el_target_rows[index].getAttribute("item_id")
+            });
+
+        };
     });
+
+
+
+    module.controller('ViewDetailController', function($scope) {
+
+        var _args = myNavigator.getCurrentPage().options;
+
+        var item = storage_manager.getItem(_args.selected_id);
+
+        {
+
+            $scope.sf = item;
+
+            /*
+            $scope.sf_id = item.id;
+            $scope.sf_title =  item.title;
+            $scope.sf_date = item.date;
+            $scope.sf_picture = "";
+            $scope.sf_selected_flavor_group = item.flavor_group;
+            $scope.sf_map_pos = item.map;
+            $scope.sf_rating = item.rating;
+            $scope.sf_rating_corn = item.rating_corn;
+            $scope.sf_price = item.price;
+            $scope.sf_comment = item.comment;
+            */
+        }
+
+
+        //編集ボタン
+        $scope.moveToModifyScreen = function(){
+
+            myNavigator.pushPage('entry_record.html', {
+                call_as_mod_screen: true, 
+                item: $scope.sf
+            });
+
+        };
+
+        // リスト選択イベント受け取り
+        $scope.$on("listSelected", function(e, param){
+
+            //$scope.selected_bike = item.value;
+
+            switch(param.parent_option.title){
+                case "flavor_group":
+                    $scope.sf_selected_flavor_group = param.item.value;
+                    break;
+                default:
+                    console.log("return value missing...");
+            }
+        });
+
+    });
+
+
+
+
 
 
     //汎用 選択リスト画面

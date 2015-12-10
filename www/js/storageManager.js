@@ -40,6 +40,8 @@ var StorageManager = function(storage_key_name){
 	var _storage_key_name = "";
 	var _items = {};
 
+	var _ref_arr = [];
+
 	proto.init = function(storage_key_name) {
 		//initialize...
 
@@ -49,7 +51,6 @@ var StorageManager = function(storage_key_name){
 		//インスタンス化直後、現在のストレージの情報をハッシュに格納する
 		_items = convStorage2Hash(storage_key_name);
 
-		console.log("init ends");
 	};
 
 	var convStorage2Hash = function(storage_key_name){
@@ -121,9 +122,18 @@ var StorageManager = function(storage_key_name){
 
 	};
 
+	proto.sortByKey = function(key, desc){
+
+
+
+
+	};
+
+
+
 	// ！！！！！！！！！！通常使用不可！！！！！！！！！！
 	proto.deleteAllItem = function(){
-		window.localStorage.setItem(_storage_key_name, {});
+		window.localStorage.setItem(_storage_key_name, JSON.stringify({}));
 	}
 
 }(StorageManager.prototype);

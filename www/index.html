@@ -26,7 +26,7 @@
     <script>
         ons.ready(function() {
             // onsen ready 
-            storage_manager = new StorageManager("SOFTCREAM_COLLECTION_LIST")
+            //storage_manager = new StorageManager("SOFTCREAM_COLLECTION_LIST");
 
         });
     </script>
@@ -94,10 +94,24 @@
                 </ons-list-item>
             </ons-list>
         </div>
+      </ons-toolbar>
 
-        <ons-button onclick="myNavigator.pushPage('entry_record.html')">登録！</ons-button>
-        <ons-button onclick="myNavigator.pushPage('view_record.html')">照会！</ons-button>
-        <ons-button ng-click="home.selectT_MAINTAINANCE()">select from db</ons-button>
+      <!--
+        ******************** home画面 ********************
+
+        表示項目
+
+            総データ数
+
+            総sf費用
+
+            評価top3
+
+       -->
+
+    <ons-button onclick="myNavigator.pushPage('entry_record.html')">登録！</ons-button>
+
+    <ons-button onclick="myNavigator.pushPage('view_record.html')">照会！</ons-button>
 
     </ons-page>
 </ons-template>
@@ -105,7 +119,12 @@
 
 <!-- 
 ********** ソフトクリーム登録画面 **********
-entry_top > entry_record
+
+機能:
+    sf情報の登録/変更 を担当する
+
+    controllerへの引数によって、登録, 照会, 変更を制御する
+
 -->
 <ons-template id="entry_record.html">
     <ons-page ng-controller="EntryController" id="entry_record">
@@ -187,6 +206,7 @@ entry_top > entry_record
                     <div class="radio-button__checkmark"></div>
                     さっぱり
                 </label>
+
                 <ons-row>
                     <ons-col>
                         <label for="input_d_bunrui">味の系統</label>
@@ -222,7 +242,8 @@ entry_top > entry_record
 
         </ons-list>
 
-        <button class="button button--large" ng-click="entryRecord()">登録</button>
+        <button class="button button--large" style="display: {{visibility.btn_entry}};" ng-click="entryRecord()">登録</button>
+        <button class="button button--large" style="display: {{visibility.btn_mod}}" ng-click="modifyRecord()">修正</button>
 
     </ons-page>
 </ons-template>
@@ -237,12 +258,13 @@ entry_top > entry_record
         <div class="left"><ons-back-button>Back</ons-back-button></div>
         <div class="center">View</div>
         <div class="right">
-            <ons-toolbar-button><ons-icon icon="ion-ios-search-strong" style="vertical-align: -4px; font-size: 28px;"></ons-icon></ons-toolbar-button>
+            <ons-toolbar-button><ons-icon icon="ion-ios-trash-outline" style="vertical-align: -4px; font-size: 28px;"></ons-icon></ons-toolbar-button>
         </div>
     </ons-toolbar>
 
-    <ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="processItemSelect($index)" class="list-item-container">
-        <ons-row>
+    <ons-list-item id="view_record_list" modifier="chevron" class="item list-item-container" ng-repeat="item in items" ng-click="processItemSelect($index, $event)">
+
+        <ons-row item_id="{{item.id}}">
             <ons-col class="item_list_date" width="40px">
                 <div>
                     <p class="date_y">{{item.date | date: 'yyyy'}}</p>
@@ -296,6 +318,61 @@ entry_top > entry_record
     </ons-page>
 </ons-template>
 
+
+
+
+<!-- 
+********** ソフトクリーム詳細照会画面 **********
+
+機能:
+    sf情報の照会 を担当する
+
+    編集ボタンが押下されたら、entry画面を変更画面としてコールする
+
+
+-->
+<ons-template id="view_record_detail.html">
+    <ons-page ng-controller="ViewDetailController">
+
+      <ons-toolbar>
+        <div class="left"><ons-back-button>Back</ons-back-button></div>
+        <div class="center">View Record</div>
+      </ons-toolbar>
+        
+        <ons-list modifier="inset">
+
+            <ons-list-item>
+                <ons-row>
+                    <ons-col class="label_area">
+                        <label for="view_sf_title">タイトル</label>
+                    </ons-col>
+                    
+                    <ons-col>
+                        {{sf.id}}
+                    </ons-col>
+
+                </ons-row>
+            </ons-list-item>
+
+            <ons-list-item>
+                <ons-row>
+                    <ons-col>
+                        <label for="view_sf_date">日付</label>
+                    </ons-col>
+                    
+                    <div id="view_sf_date">
+                        {{sf.date}}
+                    </div>
+
+                </ons-row>
+            </ons-list-item>
+
+        </ons-list>
+
+        <button class="button button--large" ng-click="moveToModifyScreen()">編集</button>
+
+    </ons-page>
+</ons-template>
 
 
 
