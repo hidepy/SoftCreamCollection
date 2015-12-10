@@ -19,8 +19,14 @@ getAllItem -public
 getItem(key) -public
 	key に指定された値をキーとして、現在保持しているハッシュの値1件を返却する
 
+getItemLength　-public
+	保存されている要素の数を返却する
+
 deleteItem(key) -public
 	key に指定された値をキーとして、現在保持しているハッシュ、localstorageから1件削除する
+
+deleteItems(keys) -public
+	keys(文字配列) に指定された要素を、現在保持しているハッシュ、localstorageから削除する
 
 saveItem2Storage(key, data) -public
 	key に指定された値をキーとし、dataを現在保持しているハッシュ、localstorageに1件登録する
@@ -29,8 +35,6 @@ saveItem2Storage(key, data) -public
 var StorageManager = function(storage_key_name){
 
 	this.init(storage_key_name);
-
-	console.log("要素の長さ: " + Object.keys(this.getAllItem));
 
 };
 
@@ -70,7 +74,7 @@ var StorageManager = function(storage_key_name){
 		}
 		catch(e){
 			console.log("eror occured");
-			console.log(e);
+			//console.log(e);
 		}
 
 		return item_hash;
@@ -114,6 +118,16 @@ var StorageManager = function(storage_key_name){
 		window.localStorage.setItem(JSON.stringify(_items));
 	};
 
+	proto.deleteItems = function(keys){
+		if(keys && keys.length && (keys.length > 0)){
+			keys.forEach(function(v, i, arr){
+				delete _items[v];
+			});
+		}
+
+		window.localStorage.setItem(JSON.stringify(_items));
+	};
+
 	proto.saveItem2Storage = function(key, data){
 
 		_items[key] = data;
@@ -129,6 +143,9 @@ var StorageManager = function(storage_key_name){
 
 	};
 
+	proto.getItemLength = function(){
+		return Object.keys(_items).length;
+	}
 
 
 	// ！！！！！！！！！！通常使用不可！！！！！！！！！！

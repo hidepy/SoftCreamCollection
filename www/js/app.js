@@ -25,15 +25,25 @@
     });
 
 
-    module.controller("HomeController", function(currentBikeInfo){
-        this.data = currentBikeInfo;
+    module.controller("HomeController", function(){
+        //this.data = currentBikeInfo;
 
-        this.visibility = {};
-        this.visibility.dbg_disp_area = "inline";
+        //this.visibility = {};
+        //this.visibility.dbg_disp_area = "inline";
 
-        this.selectT_MAINTAINANCE = function(){
-            dBAdapter.selectT_MAINTAINANCE();
-        }
+        this.collections_count = storage_manager.getItemLength();
+        this.total_amount = calcSfTotalAmount(storage_manager.getAllItem());
+
+        function calcSfTotalAmount(h){
+            var total = 0;
+
+            for(var k in h){
+                total += (h[k] && h[k].price && !isNaN(h[k].price)) ? h[k].price : 0;
+            }
+
+            return total;
+        };
+
     });
 
 
@@ -61,9 +71,6 @@
         if(_args && _args.call_as_mod_screen){
 
             var item = _args.item;
-
-            console.log("照会画面としてentry.htmlにきました。itemの値は...");
-            console.log(item);
 
             $scope.sf_id = item.id;
             $scope.sf_title =  item.title;
@@ -126,7 +133,7 @@
                 storage_manager.saveItem2Storage(id, sf_obj);
 
                 //操作成功の場合は前画面に戻る
-                myNavigator.popPage();
+                //myNavigator.popPage();
             }
             catch(e){
                 ons.notification.alert({
@@ -175,8 +182,6 @@
 
             //ストレージに1件修正レコードを投げる
             try{
-                console.log("修正直前のsf_obj:");
-                console.log(sf_obj);
                 storage_manager.saveItem2Storage(sf_obj.id, sf_obj);
 
                 //操作成功の場合は前画面に戻る
@@ -187,10 +192,9 @@
                   message: "修正に失敗しました..."
                 });
 
-                console.log(e);
+                //console.log(e);
             }
 
-            
         }
 
         // リスト選択イベント受け取り
@@ -218,9 +222,8 @@
         $scope.processItemSelect = function(index, event){
             console.log("item selected!!");
 
-            //var el_target_rows = document.querySelectorAll("#view_record_list > ons-row > .view_h_id > p"); //※※※※※※※※※修正
             var el_target_rows = document.querySelectorAll("#view_record_list > ons-row"); //※※※※※※※※※修正
-            console.log(el_target_rows);
+            //console.log(el_target_rows);
 
 
 
