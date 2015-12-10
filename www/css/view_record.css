@@ -1,0 +1,42 @@
+.list-item-container {
+  line-height: 1;
+  padding: 15px 0px 15px 15px;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 80px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+}
+
+#view_record .item{
+	font-size: 14px;
+	background: #fff;
+	padding-left: 0;
+	line-height: 1;
+}
+
+#view_record .item p{
+	margin: 0;
+	padding: 0;
+	line-height: 1.5;
+}
+
+.item_list_date{
+	text-align: center;
+	background: #25a6d9;
+	color: #fff;
+	padding: 10px 0;
+}
+
+.item_list_date p{
+	font-size: 10px;
+	margin: 0;
+	padding: 0;
+	line-height: 1;
+}
+
+.date_y{
+
+}

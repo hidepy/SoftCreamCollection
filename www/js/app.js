@@ -218,14 +218,15 @@
         $scope.processItemSelect = function(index, event){
             console.log("item selected!!");
 
-            var el_target_rows = document.querySelectorAll("#view_record_list > ons-row > .view_h_id > p"); //※※※※※※※※※修正
+            //var el_target_rows = document.querySelectorAll("#view_record_list > ons-row > .view_h_id > p"); //※※※※※※※※※修正
+            var el_target_rows = document.querySelectorAll("#view_record_list > ons-row"); //※※※※※※※※※修正
             console.log(el_target_rows);
 
 
 
             //アイテムが選択されたら、明細情報照会画面に遷移する
             myNavigator.pushPage('view_record_detail.html', {
-                selected_id: el_target_rows[index].innerHTML
+                selected_id: el_target_rows[index].getAttribute("item_id")
             });
 
         };
