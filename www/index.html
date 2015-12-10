@@ -109,28 +109,6 @@
 
        -->
 
-      <div class="profile-card">
-        <img src="images/profile-image-01.png" class="profile-image">
-        <div class="profile-name">{{home.data.name}}</div>
-        <div class="profile-desc">{{home.data.comment}}</div>
-        <div class="profile-purcase_date">{{home.data.purchace_date}}</div>
-      </div>
-     
-      <ons-list>
-        <ons-list-item>
-          <ons-row>
-            <ons-col class="info-col">
-              <div class="info-num">{{home.data.maintainance_records}}</div>
-              <div class="info-unit">Maintainance</div>
-            </ons-col>
-            <ons-col class="info-col">
-              <div class="info-num">{{home.data.touring_records}}</div>
-              <div class="info-unit">Tourings</div>
-            </ons-col>
-          </ons-row>
-        </ons-list-item>
-      </ons-list>
-
     <ons-button onclick="myNavigator.pushPage('entry_record.html')">登録！</ons-button>
 
     <ons-button onclick="myNavigator.pushPage('view_record.html')">照会！</ons-button>
@@ -280,7 +258,7 @@
         <div class="left"><ons-back-button>Back</ons-back-button></div>
         <div class="center">View</div>
         <div class="right">
-            <ons-toolbar-button><ons-icon icon="ion-ios-search-strong" style="vertical-align: -4px; font-size: 28px;"></ons-icon></ons-toolbar-button>
+            <ons-toolbar-button><ons-icon icon="ion-ios-trash-outline" style="vertical-align: -4px; font-size: 28px;"></ons-icon></ons-toolbar-button>
         </div>
     </ons-toolbar>
 
@@ -295,10 +273,7 @@
                 </div>
             </ons-col>
             <ons-col width="95px">
-              <img src="images/profile-image-01.png" class="thumbnail">
-            </ons-col>
-            <ons-col>
-              <p class="item_list_title">{{item.title}}</p>  
+              <img src="images/profile-image-01.png" class="thumbnail"></ons-col><ons-col><p class="item_list_title">{{item.title}}</p>  
               <p class="item_list_rating">{{item.rating}}</p>
               <p class="item_list_price">{{item.price}}円</p>
             </ons-col>
