@@ -8,13 +8,14 @@
   height: 80px;
   border-radius: 4px;
   -webkit-border-radius: 4px;
+  margin: 4px;
 }
 
 #view_record .item{
 	font-size: 14px;
 	background: #fff;
-	padding-left: 0;
-	line-height: 1;
+	padding: 0;
+	line-height: 0;
 }
 
 #view_record .item p{
@@ -27,7 +28,7 @@
 	text-align: center;
 	background: #25a6d9;
 	color: #fff;
-	padding: 10px 0;
+	padding: 20px 0;
 }
 
 .item_list_date p{
