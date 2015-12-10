@@ -24,7 +24,7 @@
     <script>
         ons.ready(function() {
             // onsen ready 
-            storage_manager = new StorageManager("SOFTCREAM_COLLECTION_LIST")
+            //storage_manager = new StorageManager("SOFTCREAM_COLLECTION_LIST");
 
         });
     </script>
@@ -56,6 +56,18 @@
         </div>
       </ons-toolbar>
 
+      <!--
+        ******************** home画面 ********************
+
+        表示項目
+
+            総データ数
+
+            総sf費用
+
+            評価top3
+
+       -->
 
       <div class="profile-card">
         <img src="images/profile-image-01.png" class="profile-image">
@@ -91,6 +103,13 @@
 
 <!-- 
 ********** ソフトクリーム登録画面 **********
+
+機能:
+    sf情報の登録/変更 を担当する
+
+    controllerへの引数によって、登録, 照会, 変更を制御する
+
+
 -->
 <ons-template id="entry_record.html">
     <ons-page ng-controller="EntryController">
@@ -186,7 +205,8 @@
 
         </ons-list>
 
-        <button class="button button--large" ng-click="entryRecord()">登録</button>
+        <button class="button button--large" style="display: {{visibility.btn_entry}};" ng-click="entryRecord()">登録</button>
+        <button class="button button--large" style="display: {{visibility.btn_mod}}" ng-click="modifyRecord()">修正</button>
 
     </ons-page>
 </ons-template>
@@ -205,7 +225,7 @@
         </div>
     </ons-toolbar>
 
-    <ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="processItemSelect($index)">
+    <ons-list-item id="view_record_list" modifier="chevron" class="item" ng-repeat="item in items" ng-click="processItemSelect($index, $event)">
         <ons-row>
             <ons-col class="view_h_id">
                 <p class="item-desc">{{item.id}}</p>
@@ -242,6 +262,64 @@
 
     </ons-page>
 </ons-template>
+
+
+
+
+<!-- 
+********** ソフトクリーム詳細照会画面 **********
+
+機能:
+    sf情報の照会 を担当する
+
+    編集ボタンが押下されたら、entry画面を変更画面としてコールする
+
+
+-->
+<ons-template id="view_record_detail.html">
+    <ons-page ng-controller="ViewDetailController">
+
+      <ons-toolbar>
+        <div class="left"><ons-back-button>Back</ons-back-button></div>
+        <div class="center">View Record</div>
+      </ons-toolbar>
+        
+        <ons-list modifier="inset">
+
+            <ons-list-item>
+                <ons-row>
+                    <ons-col class="label_area">
+                        <label for="view_sf_title">タイトル</label>
+                    </ons-col>
+                    
+                    <ons-col>
+                        {{sf.id}}
+                    </ons-col>
+
+                </ons-row>
+            </ons-list-item>
+
+            <ons-list-item>
+                <ons-row>
+                    <ons-col>
+                        <label for="view_sf_date">日付</label>
+                    </ons-col>
+                    
+                    <div id="view_sf_date">
+                        {{sf.date}}
+                    </div>
+
+                </ons-row>
+            </ons-list-item>
+
+        </ons-list>
+
+        <button class="button button--large" ng-click="moveToModifyScreen()">編集</button>
+
+    </ons-page>
+</ons-template>
+
+
 
 
 
