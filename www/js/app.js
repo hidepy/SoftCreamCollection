@@ -75,7 +75,7 @@
             $scope.sf_id = item.id;
             $scope.sf_title =  item.title;
             $scope.sf_date = item.date;
-            $scope.sf_picture = "";
+            $scope.sf_picture = item.picture;
             $scope.sf_selected_flavor_group = item.flavor_group;
             $scope.sf_map_pos = item.map;
             $scope.sf_rating = item.rating;
@@ -99,6 +99,29 @@
 
             myNavigator.pushPage('list_select_page.html', {title: "flavor_group"});
         };
+
+
+        //写真選択
+        $scope.showPictureSelect = function(){
+
+            console.log("in showPictureSelect");
+
+            navigator.camera.getPicture (function(imageURL){
+                console.log("get picture success!!");
+                $scope.sf_picture = imageURL;
+
+                document.getElementById("sf_picture").src = imageURL;
+            }, 
+            function(message){
+                console.log("画像取得処理でエラーが発生しました(" + message + ")");
+            }, {
+                quality: 50,
+                //destinationType: Camera.DestinationType.DATA_URL
+                destinationType: Camera.DestinationType.FILE_URI,
+                sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+            });
+        };
+
 
         //登録ボタン
         $scope.entryRecord = function(){
@@ -134,6 +157,10 @@
 
                 //操作成功の場合は前画面に戻る
                 //myNavigator.popPage();
+
+                ons.notification.alert({
+                  message: "1件登録しました"
+                });       
             }
             catch(e){
                 ons.notification.alert({
@@ -218,6 +245,11 @@
     module.controller("ViewListController", function($scope){
 
         $scope.items = storage_manager.getAllItem();
+
+        var el_list_items = document.querySelectorAll("#view_record_list ons-row[item_id]");
+
+        console.log("view list controller initialize");
+
 
         $scope.processItemSelect = function(index, event){
             console.log("item selected!!");

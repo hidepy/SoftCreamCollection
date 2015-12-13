@@ -3,7 +3,6 @@ module.exports = [
     {
         "file": "plugins/org.apache.cordova.inappbrowser/www/inappbrowser.js",
         "id": "org.apache.cordova.inappbrowser.inappbrowser",
-        "pluginId": "org.apache.cordova.inappbrowser",
         "clobbers": [
             "window.open"
         ]
@@ -11,6 +10,9 @@ module.exports = [
 ];
 module.exports.metadata = 
 // TOP OF METADATA
-{}
+{
+    "cordova-plugin-whitelist": "1.0.0",
+    "org.apache.cordova.inappbrowser": "0.6.0"
+}
 // BOTTOM OF METADATA
 });

@@ -152,6 +152,21 @@
             -->
 
             <ons-list-item>
+                <ons-row>
+                    <ons-col>
+                        <label for="input_d_bunrui">写真</label>
+                    </ons-col>
+                    <ons-col>
+                        <ons-button id="entry_sf_flavor_group" ng-click="showPictureSelect()">選択</ons-button>
+                        <span>{{sf_picture}}</span>
+                    </ons-col>
+                </ons-row>
+
+            </ons-list-item>
+
+
+            <!--
+            <ons-list-item>
                 <label for="input_d_kind" class="input_title">味の種類</label>
                 <label class="radio-button">
                     <input type="radio" name="entry_sf_kind_group" ng-model="sf_kind_group" value="バニラ" checked="checked">
@@ -184,6 +199,7 @@
                     その他
                 </label>
             </ons-list-item>
+
 
             <ons-list-item>
                 <!--<label for="input_d_bunrui" class="input_title">味の系統</label>
@@ -220,17 +236,17 @@
 
             </ons-list-item>
 
+<!--
             <ons-list-item>
                 <label for="entry_sf_rating" class="input_title">ソフトクリームの評価</label>
                 <input type="number" min="0" max="5" step="0.5" class="text-input" ng-model="sf_rating" id="entry_sf_rating" />
-                    <!--<input type="number" ng-model="sf_rating" id="entry_sf_rating" />-->
             </ons-list-item>
 
             <ons-list-item>
                 <label for="entry_sf_rating_corn" class="input_title">コーンの評価</label>
                 <input type="number" min="0" max="5" step="0.5" class="text-input" ng-model="sf_rating_corn" id="entry_sf_rating_corn" />
             </ons-list-item>
-
+-->
             <ons-list-item>
                 <label for="entry_sf_price" class="input_title">価格</label>
                 <input type="number" class="text-input" ng-model="sf_price" id="entry_sf_price" />
@@ -274,7 +290,7 @@
                 </div>
             </ons-col>
             <ons-col width="95px">
-              <img src="images/profile-image-01.png" class="thumbnail"></ons-col><ons-col><p class="item_list_title">{{item.title}}</p>  
+              <img src="{{item.picture}}" class="thumbnail"></ons-col><ons-col><p class="item_list_title">{{item.title}}</p>  
               <p class="item_list_rating">{{item.rating}}</p>
               <p class="item_list_price">{{item.price}}円</p>
             </ons-col>
@@ -283,6 +299,7 @@
                     <input type='checkbox' checklist-model="del.items" checklist-value="item.id"><div class='checkbox__checkmark checkbox--list-item__checkmark'></div>
                 </label>
             </ons-col>
+
         </ons-row>
 
         <!--<ons-row>
@@ -397,6 +414,11 @@
             <ons-list-item>マップ　{{sf.map}}</ons-list-item>
             <ons-list-item>コーン評価　{{sf.rating_corn}}</ons-list-item>
             <ons-list-item>コメント　{{sf.comment}}</ons-list-item>
+
+            <ons-list-item>{{sf.picture}}</ons-list-item>
+            <ons-list-item><img src="{{sf.picture}}"></ons-list-item>
+            <ons-list-item><img src="" id="sf_picture"></ons-list-item>
+            <ons-list-item><img src="images/softcream_top.jpg" class="profile-image"></ons-list-item>
 
         </ons-list>
 
