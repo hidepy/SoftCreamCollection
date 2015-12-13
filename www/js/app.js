@@ -1,6 +1,6 @@
 (function(){
     'use strict';
-    var module = angular.module('app', ['onsen']);
+    var module = angular.module('app', ['onsen','checklist-model']);
     var storage_manager = new StorageManager("SOFTCREAM_COLLECTION_LIST");
 
 
@@ -233,6 +233,51 @@
             });
 
         };
+
+        //削除画面切り替え
+        $scope.deleteSwitch = function(){
+
+            console.log("delete ON!");
+
+            /*var myObj = "<label class='checkbox checkbox--list-item'>\n<input type='checkbox'>\n<div class='checkbox__checkmark checkbox--list-item__checkmark'></div>\n</label>";
+            var el = document.querySelectorAll('#view_record .mark_box');
+            angular.element(el).append(myObj);
+            */
+
+            if($scope.delete_switching) {
+                $scope.delete_switching = false;
+            }else {
+               $scope.delete_switching = true;
+              }
+        };
+
+        //削除するデータリスト
+        $scope.del = {
+            items: []
+        };
+
+        //削除ボタン
+        $scope.deleteRecord = function(){
+
+            //console.log($scope.del.items);
+            storage_manager.deleteItems($scope.del.items);
+            $scope.del.items = [];
+
+        };
+
+        $scope.checkAll = function() {
+            $scope.del.items = [];
+
+            for(var i in $scope.items){
+                //console.log($scope.items[i].id);
+                $scope.del.items.push($scope.items[i].id);  
+            }
+        };
+        
+        $scope.uncheckAll = function() {
+            $scope.del.items = [];
+        };
+
     });
 
 

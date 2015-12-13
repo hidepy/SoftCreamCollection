@@ -19,8 +19,14 @@ getAllItem -public
 getItem(key) -public
 	key に指定された値をキーとして、現在保持しているハッシュの値1件を返却する
 
+getItemLength　-public
+	保存されている要素の数を返却する
+
 deleteItem(key) -public
 	key に指定された値をキーとして、現在保持しているハッシュ、localstorageから1件削除する
+
+deleteItems(keys) -public
+	keys(文字配列) に指定された要素を、現在保持しているハッシュ、localstorageから削除する
 
 saveItem2Storage(key, data) -public
 	key に指定された値をキーとし、dataを現在保持しているハッシュ、localstorageに1件登録する
@@ -30,8 +36,6 @@ var StorageManager = function(storage_key_name){
 
 	this.init(storage_key_name);
 
-	console.log("要素の長さ: " + Object.keys(this.getAllItem));
-
 };
 
 // プロトタイプ定義
@@ -39,6 +43,8 @@ var StorageManager = function(storage_key_name){
 
 	var _storage_key_name = "";
 	var _items = {};
+
+	var _ref_arr = [];
 
 	proto.init = function(storage_key_name) {
 		//initialize...
@@ -49,7 +55,6 @@ var StorageManager = function(storage_key_name){
 		//インスタンス化直後、現在のストレージの情報をハッシュに格納する
 		_items = convStorage2Hash(storage_key_name);
 
-		console.log("init ends");
 	};
 
 	var convStorage2Hash = function(storage_key_name){
@@ -69,7 +74,7 @@ var StorageManager = function(storage_key_name){
 		}
 		catch(e){
 			console.log("eror occured");
-			console.log(e);
+			//console.log(e);
 		}
 
 		return item_hash;
@@ -113,6 +118,16 @@ var StorageManager = function(storage_key_name){
 		window.localStorage.setItem(JSON.stringify(_items));
 	};
 
+	proto.deleteItems = function(keys){
+		if(keys && keys.length && (keys.length > 0)){
+			keys.forEach(function(v, i, arr){
+				delete _items[v];
+			});
+		}
+
+		window.localStorage.setItem(_storage_key_name, JSON.stringify(_items));
+	};
+
 	proto.saveItem2Storage = function(key, data){
 
 		_items[key] = data;
@@ -121,9 +136,21 @@ var StorageManager = function(storage_key_name){
 
 	};
 
+	proto.sortByKey = function(key, desc){
+
+
+
+
+	};
+
+	proto.getItemLength = function(){
+		return Object.keys(_items).length;
+	}
+
+
 	// ！！！！！！！！！！通常使用不可！！！！！！！！！！
 	proto.deleteAllItem = function(){
-		window.localStorage.setItem(_storage_key_name, {});
+		window.localStorage.setItem(_storage_key_name, JSON.stringify({}));
 	}
 
 }(StorageManager.prototype);

@@ -125,7 +125,7 @@ var StorageManager = function(storage_key_name){
 			});
 		}
 
-		window.localStorage.setItem(JSON.stringify(_items));
+		window.localStorage.setItem(_storage_key_name, JSON.stringify(_items));
 	};
 
 	proto.saveItem2Storage = function(key, data){
