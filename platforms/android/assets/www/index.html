@@ -29,6 +29,8 @@
             // onsen ready 
             //storage_manager = new StorageManager("SOFTCREAM_COLLECTION_LIST");
 
+            console.log("platform: " + window.device.platform);
+
         });
     </script>
 
@@ -154,16 +156,21 @@
             <ons-list-item>
                 <ons-row>
                     <ons-col>
-                        <label for="input_d_bunrui">写真</label>
+                        <label for="entry_sf_picture">写真</label>
                     </ons-col>
                     <ons-col>
-                        <ons-button id="entry_sf_flavor_group" ng-click="showPictureSelect()">選択</ons-button>
-                        <span>{{sf_picture}}</span>
+                        <ons-button id="entry_sf_picture" ng-click="showPictureSelect()">選択</ons-button>
+                        <span id="tsid"></span>
+                        <img id="entry_sf_picture_img">
                     </ons-col>
                 </ons-row>
 
             </ons-list-item>
 
+<canvas id="myCanvas"></canvas>
+            <!--
+            <canvas id="myCanvas" width="578" height="400"></canvas>
+        -->
 
             <!--
             <ons-list-item>
@@ -290,15 +297,18 @@
                 </div>
             </ons-col>
             <ons-col width="95px">
-              <img src="{{item.picture}}" class="thumbnail"></ons-col><ons-col><p class="item_list_title">{{item.title}}</p>  
+              <img ng-src="{{item.picture}}" class="thumbnail"></ons-col><ons-col><p class="item_list_title">{{item.title}}</p>
               <p class="item_list_rating">{{item.rating}}</p>
               <p class="item_list_price">{{item.price}}円</p>
             </ons-col>
+
+            <!--
             <ons-col width="40px" class="mark_box">
                 <label class='checkbox checkbox--list-item fade' ng-show="delete_switching" ng-click="$event.stopPropagation();">
                     <input type='checkbox' checklist-model="del.items" checklist-value="item.id"><div class='checkbox__checkmark checkbox--list-item__checkmark'></div>
                 </label>
             </ons-col>
+        -->
 
         </ons-row>
 
@@ -367,6 +377,7 @@
         <div class="center">{{sf.title}}</div>
       </ons-toolbar>
 
+
         <div class="card">
 
             <div class="card-name">{{sf.title}}</div>
@@ -415,10 +426,13 @@
             <ons-list-item>コーン評価　{{sf.rating_corn}}</ons-list-item>
             <ons-list-item>コメント　{{sf.comment}}</ons-list-item>
 
+            <!--
             <ons-list-item>{{sf.picture}}</ons-list-item>
-            <ons-list-item><img src="{{sf.picture}}"></ons-list-item>
-            <ons-list-item><img src="" id="sf_picture"></ons-list-item>
-            <ons-list-item><img src="images/softcream_top.jpg" class="profile-image"></ons-list-item>
+        -->
+            <ons-list-item><img ng-src="{{sf.picture}}"></ons-list-item>
+            <!--
+            <ons-list-item><img ng-src="" id="sf_picture"></ons-list-item>
+        -->
 
         </ons-list>
 

@@ -65,6 +65,8 @@
             btn_mod: "none"
         };
 
+        console.log("in entry initialize");
+
         var _args = myNavigator.getCurrentPage().options;
 
         //照会画面としてコールされた場合
@@ -106,26 +108,123 @@
 
             console.log("in showPictureSelect");
 
-            navigator.camera.getPicture (function(imageURL){
-                console.log("get picture success!!");
-                $scope.sf_picture = imageURL;
 
-                document.getElementById("sf_picture").src = imageURL;
+            navigator.camera.getPicture(function(base64img){
+                console.log("success");
+
+                var canvas = document.getElementById("myCanvas");
+                var context = canvas.getContext("2d");
+
+                var imageObj = new Image();
+
+                imageObj.onload = function() {
+                    console.log("in onload");
+                    //context.drawImage(imageObj, 69, 50);
+                    context.drawImage(imageObj, 0, 0, 100, 100);
+                    var base64= canvas.toDataURL('image/jpg');
+
+                    $scope.sf_picture = base64;
+                };
+                //imageObj.src = "http://www.html5canvastutorials.com/demos/assets/darth-vader.jpg";
+                imageObj.src = base64img;
+
+
+
+
+
+
+                /*
+                ImgB64Resize(base64img, 300, 300,
+                    function(img_b64) {
+
+                        console.log("img resize success!!");
+
+                        // Destination Image
+                        document.getElementById("entry_sf_picture_img").src = img_b64;
+                        $scope.sf_picture = img_b64;
+                    }, "tsid"
+                );
+*/
+
+            },
+            function(){
+                console.log("error");
+            },
+            {
+                quality: 50,
+                //destinationType: Camera.DestinationType.DATA_URL,
+                destinationType: Camera.DestinationType.FILE_URI,
+                sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+            }
+            );
+
+
+            // base64をリサイズしようとしたが、commonFunctionsのImgB64Resizeのimg.onloadが効かないので他の方法を
+            /*
+            navigator.camera.getPicture(function(base64img){
+                console.log("success");
+
+                
+                ImgB64Resize(base64img, 300, 300,
+                    function(img_b64) {
+
+                        console.log("img resize success!!");
+
+                        // Destination Image
+                        document.getElementById("entry_sf_picture_img").src = img_b64;
+                        $scope.sf_picture = img_b64;
+                    }, "tsid"
+                );
+
+            },
+            function(){
+                console.log("error");
+            },
+            {
+                quality: 50,
+                destinationType: Camera.DestinationType.DATA_URL,
+                sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
+            }
+            );
+*/
+
+            /*
+            navigator.camera.getPicture(function(base64img){
+                console.log("get picture success!!");
+
+                ImgB64Resize(base64img, 300, 300
+                    function(img_b64) {
+
+                        console.log("img resize success!!");
+
+                        // Destination Image
+                        document.getElementById("entry_sf_picture_img").src = img_b64;
+                        $scope.sf_picture = img_b64;
+                    }
+                );
+
+                //document.getElementById("sf_picture").src = imageURL;
             }, 
             function(message){
                 console.log("画像取得処理でエラーが発生しました(" + message + ")");
             }, {
                 quality: 50,
-                //destinationType: Camera.DestinationType.DATA_URL
-                destinationType: Camera.DestinationType.FILE_URI,
+                destinationType: Camera.DestinationType.DATA_URL, //base64 encode
+                //destinationType: Camera.DestinationType.FILE_URI, //for android?
+                //destinationType: Camera.DestinationType.NATIVE_URI,
                 sourceType: navigator.camera.PictureSourceType.SAVEDPHOTOALBUM
             });
+            */
+
         };
 
 
         //登録ボタン
         $scope.entryRecord = function(){
 
+            console.log("in entry record");
+
+            /*
             //タイトルの入力判定
             if(isEmpty($scope.sf_title)){
                 ons.notification.alert({
@@ -134,7 +233,9 @@
 
                 return;
             }
+            */
 
+            console.log("after checking title");
 
             var id = formatDate(new Date());
 
@@ -151,6 +252,8 @@
                 comment: $scope.sf_comment
             };
 
+            console.log("before inserting storage_manager");
+
             //ストレージに1件登録
             try{
                 storage_manager.saveItem2Storage(id, sf_obj);
@@ -158,14 +261,23 @@
                 //操作成功の場合は前画面に戻る
                 //myNavigator.popPage();
 
+                /*
                 ons.notification.alert({
                   message: "1件登録しました"
-                });       
+                });
+                */
+
+                showAlert("1件登録しました");
             }
             catch(e){
+
+                showAlert("登録に失敗しました...");
+
+                /*
                 ons.notification.alert({
                   message: "登録に失敗しました..."
                 });
+*/
             }
 
             //ここで、成功した場合のみ前画面に戻りたい...
@@ -178,18 +290,27 @@
 
             //タイトルの入力判定
             if(isEmpty($scope.sf_title)){
+
+                showAlert("タイトルを入力してください...");
+
+                /*
                 ons.notification.alert({
                   message: "タイトルを入力してよっ！！"
                 });
+*/
 
                 return;
             }
 
             //idの入力判定
             if(isEmpty($scope.sf_id)){
+                showAlert("id not found...");
+
+                /*
                 ons.notification.alert({
                   message: "id not found..."
                 });
+*/
 
                 return;
             }
@@ -215,9 +336,14 @@
                 myNavigator.popPage();
             }
             catch(e){
+
+                showAlert("修正に失敗しました...");
+
+                /*
                 ons.notification.alert({
                   message: "修正に失敗しました..."
                 });
+*/
 
                 //console.log(e);
             }
@@ -248,16 +374,14 @@
 
         var el_list_items = document.querySelectorAll("#view_record_list ons-row[item_id]");
 
-        console.log("view list controller initialize");
-
-
         $scope.processItemSelect = function(index, event){
             console.log("item selected!!");
 
             var el_target_rows = document.querySelectorAll("#view_record_list > ons-row"); //※※※※※※※※※修正
-            //console.log(el_target_rows);
 
+            console.log("after getting el_target_rows. length is: " + el_target_rows.length);
 
+            console.log("index is: " + index);
 
             //アイテムが選択されたら、明細情報照会画面に遷移する
             myNavigator.pushPage('view_record_detail.html', {
@@ -341,6 +465,8 @@
 
         //編集ボタン
         $scope.moveToModifyScreen = function(){
+
+            console.log("in moveToModifyScreen");
 
             myNavigator.pushPage('entry_record.html', {
                 call_as_mod_screen: true, 

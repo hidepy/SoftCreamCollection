@@ -35,7 +35,6 @@ saveItem2Storage(key, data) -public
 var StorageManager = function(storage_key_name){
 
 	this.init(storage_key_name);
-
 };
 
 // プロトタイプ定義
@@ -63,8 +62,6 @@ var StorageManager = function(storage_key_name){
 
 		try{
 
-			//console.log(JSON.parse('{"hoge": 1}'));
-
 			var s = window.localStorage.getItem(storage_key_name);
 
 			if(s){
@@ -73,32 +70,8 @@ var StorageManager = function(storage_key_name){
 
 		}
 		catch(e){
-			console.log("eror occured");
-			//console.log(e);
+			console.log("convStorage2Hash eror occured");
 		}
-
-		return item_hash;
-	};
-
-	//proto.convStorage2Hash = function(){
-	var _convStorage2Hash = function(storage_key_name){
-
-		console.log("storage_key_name is: " + storage_key_name);
-
-		var items = window.localStorage.getItem(storage_key_name);	
-
-		console.log("before parse");
-		console.log(items);
-
-		if(!items){
-			return {};
-		}
-
-		console.log("is not returned");
-
-		var item_hash = JSON.parse(items);
-
-		console.log("after parse");
 
 		return item_hash;
 	};
@@ -137,9 +110,6 @@ var StorageManager = function(storage_key_name){
 	};
 
 	proto.sortByKey = function(key, desc){
-
-
-
 
 	};
 
